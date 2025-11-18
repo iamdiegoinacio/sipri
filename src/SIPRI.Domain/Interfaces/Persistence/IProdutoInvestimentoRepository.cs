@@ -1,6 +1,6 @@
 ﻿using SIPRI.Domain.Entities;
 
-namespace SIPRI.Domain.Interfaces;
+namespace SIPRI.Domain.Persistence;
 
 public interface IProdutoInvestimentoRepository
 {

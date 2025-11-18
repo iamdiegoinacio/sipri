@@ -1,7 +1,7 @@
 ﻿using SIPRI.Domain.Entities;
 using SIPRI.Domain.Models;
 
-namespace SIPRI.Domain.Interfaces;
+namespace SIPRI.Domain.Interfaces.Persistence;
 
 public interface ISimulacaoRepository
 {
