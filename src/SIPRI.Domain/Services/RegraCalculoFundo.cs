@@ -1,0 +1,32 @@
+﻿using SIPRI.Domain.Contexts;
+using SIPRI.Domain.Interfaces.Services;
+
+namespace SIPRI.Domain.Services;
+
+/// <summary>
+/// Implementa a regra de cálculo para produtos do tipo "Fundo".
+/// </summary>
+public sealed class RegraCalculoFundo : IRegraCalculoInvestimento
+{
+    // Define o tipo de produto que esta regra atende.
+    public string TipoProduto => "Fundo";
+
+    /// <summary>
+    /// Fórmula: ValorFinal = ValorInvestido + Juros
+    /// Juros = ValorInvestido * RentabilidadeBaseAnual * (PrazoMeses / 12)
+    /// </summary>
+    public decimal Calcular(CalculoInvestimentoContexto contexto)
+    {
+        ArgumentNullException.ThrowIfNull(contexto.Produto);
+
+        // Converte o prazo de meses para anos (fração)
+        decimal prazoEmAnos = (decimal)contexto.PrazoMeses / 12;
+
+        decimal juros = contexto.ValorInvestido * contexto.Produto.RentabilidadeBase * prazoEmAnos;
+
+        decimal valorFinal = contexto.ValorInvestido + juros;
+
+        // Arredonda para 2 casas decimais (padrão monetário)
+        return Math.Round(valorFinal, 2);
+    }
+}
