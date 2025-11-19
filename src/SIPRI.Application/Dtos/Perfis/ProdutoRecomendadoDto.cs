@@ -1,4 +1,4 @@
-﻿namespace SIPRI.Application.DTOs.Perfil;
+﻿namespace SIPRI.Application.DTOs.Perfis;
 
 /// <summary>
 /// DTO para a resposta da consulta de Produtos Recomendados.

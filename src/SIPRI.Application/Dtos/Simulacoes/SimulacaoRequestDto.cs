@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SIPRI.Application.DTOs.Simulacao;
+namespace SIPRI.Application.DTOs.Simulacoes;
 
 /// <summary>
 /// DTO para a solicitação de uma nova simulação

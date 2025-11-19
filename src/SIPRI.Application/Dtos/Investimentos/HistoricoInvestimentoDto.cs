@@ -1,4 +1,4 @@
-﻿namespace SIPRI.Application.DTOs.Investimento;
+﻿namespace SIPRI.Application.DTOs.Investimentos;
 
 /// <a/summary>
 /// DTO para a resposta da consulta de Histórico de Investimentos.
