@@ -1,5 +1,7 @@
 ﻿using SIPRI.Application.Exceptions; 
-using SIPRI.Domain.Exceptions;  
+using SIPRI.Domain.Exceptions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace SIPRI.Presentation.Middlewares;
 

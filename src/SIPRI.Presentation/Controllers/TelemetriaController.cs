@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SIPRI.Application.DTOs.Telemetria;
 using SIPRI.Application.UseCases.Telemetria;
+using Microsoft.AspNetCore.Http;
 
 namespace SIPRI.Presentation.Controllers;
 

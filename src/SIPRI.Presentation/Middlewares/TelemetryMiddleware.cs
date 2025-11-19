@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
-using SIPRI.Application.Interfaces; 
+using SIPRI.Application.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace SIPRI.Presentation.Middlewares;
 

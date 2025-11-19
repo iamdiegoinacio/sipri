@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SIPRI.Application.DTOs.Simulacoes; 
 using SIPRI.Application.UseCases.Simulacoes;
+using Microsoft.AspNetCore.Http;
 
 namespace SIPRI.Presentation.Controllers;
 
