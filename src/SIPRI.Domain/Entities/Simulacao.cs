@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace SIPRI.Domain.Entities;
+﻿namespace SIPRI.Domain.Entities;
 
 /// <summary>
 /// Representa o registro de uma simulação de investimento realizada.

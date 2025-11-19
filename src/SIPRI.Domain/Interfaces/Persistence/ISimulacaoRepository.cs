@@ -11,9 +11,9 @@ public interface ISimulacaoRepository
     Task AddAsync(Simulacao simulacao);
 
     /// <summary>
-    /// Busca o histórico de todas as simulações.
+    /// Busca simulações específicas de um cliente.
     /// </summary>
-    Task<IEnumerable<Simulacao>> GetAllAsync();
+    Task<IEnumerable<Simulacao>> GetByClienteIdAsync(Guid clienteId);
 
     /// <summary>
     /// Busca dados agregados das simulações.
