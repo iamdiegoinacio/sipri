@@ -20,18 +20,19 @@ public static class DependencyInjection
             options.UseSqlServer(connectionString,
                 b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
-        // 2. Registro dos Repositórios (Scoped - tempo de vida do request)
+        // 2. Registro dos Repositórios
         services.AddScoped<IProdutoInvestimentoRepository, ProdutoInvestimentoRepository>();
         services.AddScoped<IInvestimentoRepository, InvestimentoRepository>();
         services.AddScoped<ISimulacaoRepository, SimulacaoRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        // 3. Registro dos Serviços de Infra (Singleton ou Scoped)
+        // 3. Registro dos Serviços de Infra
+
+        // DateTimeProvider pode ser Singleton pois não guarda estado
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
-        // Telemetria
-        services.AddSingleton<TelemetryService>();
-        services.AddSingleton<ITelemetryService>(provider => provider.GetRequiredService<TelemetryService>());
+        // Telemetria:
+        services.AddSingleton<ITelemetryService, TelemetryService>();
 
         return services;
     }
