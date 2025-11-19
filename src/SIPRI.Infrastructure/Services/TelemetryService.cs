@@ -6,12 +6,14 @@ namespace SIPRI.Infrastructure.Services;
 
 /// <summary>
 /// Implementação em memória do serviço de telemetria.
+/// Mantém o estado (estatísticas) enquanto a aplicação estiver rodando.
 /// </summary>
 public class TelemetryService : ITelemetryService
 {
     // Armazena os dados: Chave = Nome do Endpoint, Valor = Estatísticas
+    // Thread-safe para garantir integridade com múltiplas requisições simultâneas.
     private readonly ConcurrentDictionary<string, EndpointStats> _stats = new();
-    
+
     // Data de início da coleta (quando a aplicação subiu)
     private readonly DateOnly _dataInicio;
 
@@ -47,18 +49,16 @@ public class TelemetryService : ITelemetryService
     }
 
     /// <summary>
-    /// Método utilitário para registrar uma nova métrica.
-    /// Será chamado pelo Middleware de Telemetria (Presentation).
+    /// Método chamado pelo Middleware de Telemetria (Presentation) via Interface.
     /// </summary>
     public void RecordRequest(string endpointName, long elapsedMs)
     {
-        // Adiciona ou Atualiza atomicamente
         _stats.AddOrUpdate(
             key: endpointName,
             addValueFactory: _ => new EndpointStats { Count = 1, TotalTimeMs = elapsedMs },
             updateValueFactory: (_, current) =>
             {
-                // Incrementa de forma segura (lock-free logic simplificada aqui para o objeto)
+                // Incrementa de forma segura
                 current.Count++;
                 current.TotalTimeMs += elapsedMs;
                 return current;

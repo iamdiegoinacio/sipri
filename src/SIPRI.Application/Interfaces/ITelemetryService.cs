@@ -2,14 +2,11 @@
 
 namespace SIPRI.Application.Interfaces;
 
-/// <summary>
-/// Interface para obter métricas de performance do sistema.
-/// A implementação (Infra) lerá os contadores ou logs.
-/// </summary>
 public interface ITelemetryService
 {
-    /// <summary>
-    /// Retorna o snapshot atual das métricas de telemetria.
-    /// </summary>
+    // Leitura (usado pelo Handler)
     Task<TelemetriaDto> GetMetricsAsync();
+
+    // Gravação (usado pelo Middleware)
+    void RecordRequest(string endpointName, long elapsedMs);
 }
