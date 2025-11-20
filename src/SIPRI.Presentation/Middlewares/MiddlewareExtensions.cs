@@ -11,4 +11,12 @@ public static class MiddlewareExtensions
     {
         return app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
     }
+
+    /// <summary>
+    /// Adiciona o middleware de telemetria ao pipeline.
+    /// </summary>
+    public static IApplicationBuilder UseTelemetry(this IApplicationBuilder app)
+    {
+        return app.UseMiddleware<TelemetryMiddleware>();
+    }
 }
