@@ -4,6 +4,7 @@ using SIPRI.Presentation.Middlewares;
 using SIPRI.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using SIPRI.Presentation.Controllers;
+using SIPRI.Infrastructure.Persistence.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,6 +74,8 @@ using (var scope = app.Services.CreateScope())
     {
         // Aplica migrações pendentes e cria o banco se não existir
         dbContext.Database.Migrate();
+
+        DbInitializer.Seed(dbContext);
     }
     catch (Exception ex)
     {
