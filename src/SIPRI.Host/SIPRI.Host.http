@@ -1,0 +1,6 @@
+@SIPRI.Host_HostAddress = http://localhost:5058
+
+GET {{SIPRI.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

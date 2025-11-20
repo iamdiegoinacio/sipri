@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SIPRI.Application.DTOs.Investimentos;
 using SIPRI.Application.UseCases.Investimentos;
+using Microsoft.AspNetCore.Http;
 
 namespace SIPRI.Presentation.Controllers;
 
