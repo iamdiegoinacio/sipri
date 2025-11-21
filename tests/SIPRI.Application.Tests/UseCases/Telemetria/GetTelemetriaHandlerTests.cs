@@ -2,7 +2,8 @@ using FluentAssertions;
 using Moq;
 using SIPRI.Application.DTOs.Telemetria;
 using SIPRI.Application.Interfaces;
-using SIPRI.Application.UseCases.Telemetria;
+using SIPRI.Application.Queries.Telemetria;
+using SIPRI.Application.Handlers.Telemetria;
 
 namespace SIPRI.Application.Tests.UseCases.Telemetria;
 
@@ -40,3 +41,4 @@ public class GetTelemetriaHandlerTests
         result.Servicos.First().Nome.Should().Be("API");
     }
 }
+

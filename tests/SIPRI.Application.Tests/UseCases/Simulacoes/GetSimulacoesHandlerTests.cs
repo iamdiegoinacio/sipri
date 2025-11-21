@@ -1,6 +1,8 @@
 using FluentAssertions;
 using Moq;
-using SIPRI.Application.UseCases.Simulacoes;
+using SIPRI.Application.Commands.Simulacoes;
+using SIPRI.Application.Handlers.Simulacoes; using SIPRI.Application.Queries.Simulacoes;
+using SIPRI.Application.Handlers.Simulacoes;
 using SIPRI.Domain.Entities;
 using SIPRI.Domain.Interfaces.Persistence;
 
@@ -42,3 +44,4 @@ public class GetSimulacoesHandlerTests
         result.First().ValorFinal.Should().Be(1100);
     }
 }
+
