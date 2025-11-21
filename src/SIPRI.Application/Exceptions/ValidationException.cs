@@ -1,28 +1,28 @@
-Ôªøusing System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace SIPRI.Application.Exceptions;
 
 /// <summary>
-/// Lan√ßada quando a valida√ß√£o da l√≥gica de neg√≥cio na camada de Aplica√ß√£o falha.
-/// (Ex: "O produto 'XYZ' n√£o √© v√°lido para simula√ß√£o").
+/// LanÁada quando a validaÁ„o da lÛgica de negÛcio na camada de AplicaÁ„o falha.
+/// (Ex: "O produto 'XYZ' n„o È v·lido para simulaÁ„o").
 /// A camada de Presentation deve capturar e retornar um HTTP 400 Bad Request.
 /// </summary>
 public class ValidationException : Exception
 {
     /// <summary>
-    /// Cole√ß√£o de erros de valida√ß√£o, onde a 'key' √© o nome do campo
-    /// (ou uma chave gen√©rica) e o 'value' √© um array de mensagens
+    /// ColeÁ„o de erros de validaÁ„o, onde a 'key' È o nome do campo
+    /// (ou uma chave genÈrica) e o 'value' È um array de mensagens
     /// de erro para aquele campo.
     /// </summary>
     public IReadOnlyDictionary<string, string[]> Errors { get; }
 
     /// <summary>
-    /// Construtor para um √∫nico erro de valida√ß√£o.
+    /// Construtor para um ˙nico erro de validaÁ„o.
     /// </summary>
-    /// <param name="field">O nome do campo que falhou na valida√ß√£o.</param>
+    /// <param name="field">O nome do campo que falhou na validaÁ„o.</param>
     /// <param name="message">A mensagem de erro.</param>
     public ValidationException(string field, string message)
-        : base("A requisi√ß√£o falhou na valida√ß√£o.")
+        : base("A requisiÁ„o falhou na validaÁ„o.")
     {
         Errors = new Dictionary<string, string[]>
         {
@@ -31,11 +31,11 @@ public class ValidationException : Exception
     }
 
     /// <summary>
-    /// Construtor que aceita um dicion√°rio de m√∫ltiplos erros de valida√ß√£o.
+    /// Construtor que aceita um dicion·rio de m˙ltiplos erros de validaÁ„o.
     /// </summary>
-    /// <param name="errors">Um dicion√°rio de erros de valida√ß√£o.</param>
+    /// <param name="errors">Um dicion·rio de erros de validaÁ„o.</param>
     public ValidationException(IReadOnlyDictionary<string, string[]> errors)
-        : base("A requisi√ß√£o falhou na valida√ß√£o.")
+        : base("A requisiÁ„o falhou na validaÁ„o.")
     {
         Errors = errors;
     }

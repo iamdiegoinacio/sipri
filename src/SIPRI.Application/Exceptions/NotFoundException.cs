@@ -1,10 +1,10 @@
-Ôªønamespace SIPRI.Application.Exceptions;
+namespace SIPRI.Application.Exceptions;
 
 /// <summary>
-/// Exce√ß√£o customizada para ser lan√ßada quando uma entidade
-/// ou recurso n√£o √© encontrado.
+/// ExceÁ„o customizada para ser lanÁada quando uma entidade
+/// ou recurso n„o È encontrado.
 /// A camada de Presentation (API) deve ser configurada
-/// para capturar esta exce√ß√£o e retornar um HTTP 404.
+/// para capturar esta exceÁ„o e retornar um HTTP 404.
 /// </summary>
 public class NotFoundException : Exception
 {
@@ -24,7 +24,7 @@ public class NotFoundException : Exception
     }
 
     public NotFoundException(string name, object key)
-        : base($"Entidade \"{name}\" ({key}) n√£o foi encontrada.")
+        : base($"Entidade \"{name}\" ({key}) n„o foi encontrada.")
     {
     }
 }
