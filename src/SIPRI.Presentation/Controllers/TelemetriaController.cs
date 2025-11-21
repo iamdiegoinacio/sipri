@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SIPRI.Application.DTOs.Telemetria;
-using SIPRI.Application.UseCases.Telemetria;
+using SIPRI.Application.Queries.Telemetria;
 
 namespace SIPRI.Presentation.Controllers;
 
@@ -19,11 +19,6 @@ public class TelemetriaController : ControllerBase
         _mediator = mediator;
     }
 
-    /// <summary>
-    /// Exibe métricas de uso e performance da API.
-    /// </summary>
-    /// <param name="cancellationToken">Token de cancelamento da requisição.</param>
-    /// <returns>Métricas de telemetria.</returns>
     [HttpGet]
     [ProducesResponseType(typeof(TelemetriaDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

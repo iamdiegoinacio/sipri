@@ -1,7 +1,7 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SIPRI.Application.DTOs.Investimentos;
-using SIPRI.Application.UseCases.Investimentos;
+using SIPRI.Application.Queries.Investimentos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 
