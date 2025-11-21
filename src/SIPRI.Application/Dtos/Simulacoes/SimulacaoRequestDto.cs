@@ -1,9 +1,9 @@
-ï»¿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace SIPRI.Application.DTOs.Simulacoes;
 
 /// <summary>
-/// DTO para a solicitaÃ§Ã£o de uma nova simulaÃ§Ã£o
+/// DTO para a solicitação de uma nova simulação
 /// </summary>
 public class SimulacaoRequestDto
 {
