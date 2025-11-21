@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using SIPRI.Application.DTOs.Investimentos;
 using SIPRI.Application.UseCases.Investimentos;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SIPRI.Presentation.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("investimentos")]
 public class InvestimentoController : ControllerBase
 {

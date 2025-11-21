@@ -1,12 +1,14 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SIPRI.Application.DTOs.Perfis;
 using SIPRI.Application.UseCases.Perfis;
-using Microsoft.AspNetCore.Http;
 
 namespace SIPRI.Presentation.Controllers;
 
 [ApiController]
+[Authorize]
 public class PerfilController : ControllerBase
 {
     private readonly IMediator _mediator;
