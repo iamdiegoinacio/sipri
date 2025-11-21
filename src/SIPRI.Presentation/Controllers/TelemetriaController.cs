@@ -1,12 +1,14 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SIPRI.Application.DTOs.Telemetria;
 using SIPRI.Application.UseCases.Telemetria;
-using Microsoft.AspNetCore.Http;
 
 namespace SIPRI.Presentation.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("telemetria")]
 public class TelemetriaController : ControllerBase
 {

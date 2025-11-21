@@ -1,12 +1,14 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SIPRI.Application.DTOs.Simulacoes; 
 using SIPRI.Application.UseCases.Simulacoes;
-using Microsoft.AspNetCore.Http;
 
 namespace SIPRI.Presentation.Controllers;
 
 [ApiController]
+[Authorize]
 public class SimulacaoController : ControllerBase
 {
     private readonly IMediator _mediator;
