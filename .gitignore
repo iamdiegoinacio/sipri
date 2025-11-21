@@ -4,7 +4,6 @@
 ## Get latest from `dotnet new gitignore`
 
 # dotenv files
-.env
 coverage-report/*
 
 # User-specific files
