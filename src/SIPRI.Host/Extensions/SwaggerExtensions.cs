@@ -8,6 +8,28 @@ public static class SwaggerExtensions
     {
         var keycloakSettings = configuration.GetSection("Keycloak");
 
+        // 1. Captura as variáveis críticas para o Swagger UI
+        var authorizationUrl = keycloakSettings["AuthorizationUrl"];
+        var publicTokenUrl = keycloakSettings["PublicTokenUrl"];
+
+        // 2. Validação Rigorosa (Fail Fast)
+        // Verifica quais variáveis estão faltando para dar um erro preciso
+        var missingVars = new List<string>();
+
+        if (string.IsNullOrWhiteSpace(authorizationUrl))
+            missingVars.Add("Keycloak:AuthorizationUrl");
+
+        if (string.IsNullOrWhiteSpace(publicTokenUrl))
+            missingVars.Add("Keycloak:PublicTokenUrl");
+
+        if (missingVars.Any())
+        {
+            throw new InvalidOperationException(
+                $"A inicialização do Swagger falhou devido à falta de configurações obrigatórias no appsettings ou variáveis de ambiente. " +
+                $"Variáveis ausentes: {string.Join(", ", missingVars)}. " +
+                $"O Swagger UI exige URLs acessíveis externamente (PublicTokenUrl) para funcionar corretamente via Browser.");
+        }
+
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo
@@ -24,8 +46,9 @@ public static class SwaggerExtensions
                 {
                     AuthorizationCode = new OpenApiOAuthFlow
                     {
-                        AuthorizationUrl = new Uri(keycloakSettings["AuthorizationUrl"]!),
-                        TokenUrl = new Uri(keycloakSettings["TokenUrl"]!),
+                        // Usa as variáveis validadas acima
+                        AuthorizationUrl = new Uri(authorizationUrl!),
+                        TokenUrl = new Uri(publicTokenUrl!),
                         Scopes = new Dictionary<string, string> { }
                     }
                 },
@@ -55,7 +78,6 @@ public static class SwaggerExtensions
             options.OAuthClientId("cli-web-sipri");
             options.OAuthAppName("SIPRI API");
             options.OAuthUsePkce();
-
             options.EnablePersistAuthorization();
         });
 
