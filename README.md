@@ -15,6 +15,154 @@
 
 ---
 
+## 🚀 INÍCIO RÁPIDO PARA AVALIADORES
+
+> **⚡ Comece a testar a aplicação em menos de 2 minutos!**
+
+### 📦 Passo 1: Baixar e Levantar o Ambiente
+
+```bash
+# Clone o repositório
+git clone https://github.com/iamdiegoinacio/sipri.git
+cd sipri
+
+# Inicie todos os serviços com Docker Compose
+docker-compose up --build -d
+
+# Aguarde ~30 segundos para inicialização completa
+```
+
+**Serviços disponíveis:**
+
+- 🌐 **API SIPRI:** http://localhost:5058
+- 🔐 **Keycloak:** http://localhost:8080
+- 💾 **SQL Server:** localhost:1433
+
+---
+
+### 🎯 Escolha sua Forma de Teste
+
+<details open>
+<summary><b>✅ OPÇÃO 1: Testar via Swagger (Recomendado)</b></summary>
+
+#### 1️⃣ Acesse o Swagger UI
+
+Abra no navegador: **http://localhost:5058/swagger/index.html**
+
+#### 2️⃣ Autentique-se
+
+1. Clique no botão **"Authorize"** 🔓 (canto superior direito)
+2. Na janela que abrir, clique novamente em **"Authorize"**
+3. Você será redirecionado para o Keycloak
+4. **Faça login:**
+   - **Username:** `user`
+   - **Password:** `user`
+5. Após login, você retorna ao Swagger autenticado ✅
+
+#### 3️⃣ Teste os Endpoints
+
+Agora você pode expandir qualquer endpoint e clicar em **"Try it out"** para testá-lo!
+
+#### 4️⃣ Consulte os Casos de Uso
+
+Para exemplos detalhados de cada endpoint com payloads de entrada/saída:
+
+👉 **[Documentação de Casos de Uso e Testes](documentacao/casos-de-uso-e-testes/casos-de-uso-e-testes.md)**
+
+</details>
+
+<details>
+<summary><b>✅ OPÇÃO 2: Testar via Postman</b></summary>
+
+#### 1️⃣ Baixe a Coleção do Postman
+
+📥 **[SIPRI.postman_collection.json](SIPRI.postman_collection.json)**
+
+#### 2️⃣ Importe no Postman
+
+1. Abra o Postman
+2. Clique em **"Import"**
+3. Selecione o arquivo `SIPRI.postman_collection.json`
+4. A coleção será importada com todas as variáveis pré-configuradas
+
+#### 3️⃣ Autentique-se (Escolha um dos clientes)
+
+**🌐 Opção A: Cliente Web Público (cli-web-sipri)**
+
+1. Vá para a pasta **"🔐 Autenticação"**
+2. Execute a requisição **"1️⃣ Obter Token - Cliente Web (PKCE)"**
+3. O token será salvo automaticamente ✅
+
+**Credenciais:**
+
+- Username: `user`
+- Password: `user`
+
+---
+
+**🔧 Opção B: Cliente de Serviço (cli-sir-sipri)**
+
+Primeiro, obtenha o client secret do Keycloak:
+
+```bash
+# 1. Acesse o Keycloak Admin
+# URL: http://localhost:8080/admin
+# Username: admin
+# Password: admin
+
+# 2. Navegue para:
+# Realm: sipri-realm → Clients → cli-sir-sipri → Credentials
+
+# 3. Copie o "Client Secret"
+```
+
+Depois, no Postman:
+
+1. Vá para **"Collection Variables"** (aba na coleção)
+2. Cole o secret na variável `client_secret` (ou use o valor já pré-configurado: `Z3T3Jz3QWZ1Hdb0TpyW8JTKXytnmAylR`)
+3. Execute a requisição **"2️⃣ Obter Token - Cliente de Serviço (Client Credentials)"**
+4. O token será salvo automaticamente ✅
+
+> **💡 Dica:** O client secret já está pré-configurado na coleção para facilitar os testes!
+
+#### 4️⃣ Teste os Endpoints
+
+Agora você pode executar qualquer requisição das pastas:
+
+- 💰 **Simulações** - Simular investimentos
+- 👤 **Perfil de Risco** - Calcular perfil e obter recomendações
+- 📊 **Investimentos** - Consultar carteira
+- 📈 **Telemetria** - Métricas da API
+
+**Todos os tokens são automaticamente incluídos nas requisições!**
+
+#### 5️⃣ Casos de Uso Pré-Configurados
+
+A coleção já contém exemplos prontos de:
+
+- ✅ Simulação de investimento com diferentes produtos
+- ✅ Cálculo de perfil de risco
+- ✅ Consulta de produtos recomendados por perfil
+- ✅ Listagem de investimentos
+- ✅ Métricas agregadas
+
+</details>
+
+---
+
+### 🔐 Demonstração de Autenticação
+
+A aplicação suporta **dois tipos de clientes OAuth2**:
+
+| Cliente           | Tipo         | Grant Type                           | Uso                |
+| ----------------- | ------------ | ------------------------------------ | ------------------ |
+| **cli-web-sipri** | Público      | Authorization Code + PKCE / Password | Aplicações Web/SPA |
+| **cli-sir-sipri** | Confidencial | Client Credentials                   | Serviços Backend   |
+
+**Ambos os fluxos estão funcionais e podem ser testados via Swagger ou Postman!**
+
+---
+
 ## 📋 Índice
 
 1. [Visão Geral](#-visão-geral)
@@ -61,7 +209,7 @@ O **SIPRI** é uma API REST robusta e escalável para o setor financeiro, desenv
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/seu-usuario/sipri.git
+git clone https://github.com/iamdiegoinacio/sipri.git
 cd sipri
 
 # 2. Inicie todos os serviços com Docker Compose

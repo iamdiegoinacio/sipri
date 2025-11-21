@@ -1,0 +1,415 @@
+{
+  "info": {
+    "_postman_id": "sipri-api-collection-2024",
+    "name": "SIPRI - Sistema de Investimentos",
+    "description": "Coleção completa da API SIPRI com autenticação Keycloak configurada.\n\n## Como usar:\n1. Configure as variáveis de ambiente (já pré-configuradas)\n2. Execute a requisição de autenticação desejada (Web Client ou Service Client)\n3. O token será automaticamente salvo e usado nas demais requisições\n4. Teste os endpoints disponíveis",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "🔐 Autenticação",
+      "item": [
+        {
+          "name": "1️⃣ Obter Token - Cliente Web (PKCE)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Salva o token automaticamente",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+                  "    pm.collectionVariables.set(\"refresh_token\", jsonData.refresh_token);",
+                  "    console.log(\"✅ Token obtido com sucesso!\");",
+                  "    console.log(\"Token expira em: \" + jsonData.expires_in + \" segundos\");",
+                  "} else {",
+                  "    console.log(\"❌ Erro ao obter token\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "client_id",
+                  "value": "cli-web-sipri",
+                  "description": "Cliente público (Web/SPA)",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "description": "Resource Owner Password Credentials (apenas para testes)",
+                  "type": "text"
+                },
+                {
+                  "key": "username",
+                  "value": "user",
+                  "description": "Usuário padrão",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "user",
+                  "description": "Senha padrão",
+                  "type": "text"
+                },
+                {
+                  "key": "scope",
+                  "value": "openid profile email",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{keycloak_url}}/realms/{{realm}}/protocol/openid-connect/token",
+              "host": ["{{keycloak_url}}"],
+              "path": [
+                "realms",
+                "{{realm}}",
+                "protocol",
+                "openid-connect",
+                "token"
+              ]
+            },
+            "description": "Obtém token JWT usando cliente público (cli-web-sipri).\n\n**Credenciais padrão:**\n- Username: `user`\n- Password: `user`\n\nO token será automaticamente salvo na variável `access_token` e usado nas próximas requisições."
+          },
+          "response": []
+        },
+        {
+          "name": "2️⃣ Obter Token - Cliente de Serviço (Client Credentials)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Salva o token automaticamente",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+                  "    console.log(\"✅ Token de serviço obtido com sucesso!\");",
+                  "    console.log(\"Token expira em: \" + jsonData.expires_in + \" segundos\");",
+                  "} else {",
+                  "    console.log(\"❌ Erro ao obter token de serviço\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "client_id",
+                  "value": "cli-sir-sipri",
+                  "description": "Cliente confidencial (Backend/Service)",
+                  "type": "text"
+                },
+                {
+                  "key": "client_secret",
+                  "value": "{{client_secret}}",
+                  "description": "Secret do cliente de serviço",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials",
+                  "type": "text"
+                },
+                {
+                  "key": "scope",
+                  "value": "openid",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{keycloak_url}}/realms/{{realm}}/protocol/openid-connect/token",
+              "host": ["{{keycloak_url}}"],
+              "path": [
+                "realms",
+                "{{realm}}",
+                "protocol",
+                "openid-connect",
+                "token"
+              ]
+            },
+            "description": "Obtém token JWT usando cliente confidencial (cli-sir-sipri) com Client Credentials.\n\nEste fluxo é usado para comunicação service-to-service, sem usuário final.\n\nO token será automaticamente salvo na variável `access_token`."
+          },
+          "response": []
+        },
+        {
+          "name": "3️⃣ Renovar Token (Refresh)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+                  "    pm.collectionVariables.set(\"refresh_token\", jsonData.refresh_token);",
+                  "    console.log(\"✅ Token renovado com sucesso!\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "client_id",
+                  "value": "cli-web-sipri",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "refresh_token",
+                  "type": "text"
+                },
+                {
+                  "key": "refresh_token",
+                  "value": "{{refresh_token}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{keycloak_url}}/realms/{{realm}}/protocol/openid-connect/token",
+              "host": ["{{keycloak_url}}"],
+              "path": [
+                "realms",
+                "{{realm}}",
+                "protocol",
+                "openid-connect",
+                "token"
+              ]
+            },
+            "description": "Renova o access token usando o refresh token."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints de autenticação OAuth2/OIDC com Keycloak.\n\n**Dois tipos de clientes disponíveis:**\n1. **cli-web-sipri** - Cliente público (Web/SPA)\n2. **cli-sir-sipri** - Cliente confidencial (Backend/Service)"
+    },
+    {
+      "name": "💰 Simulações",
+      "item": [
+        {
+          "name": "Simular Investimento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clienteId\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"produtoId\": 1,\n  \"valorInicial\": 10000.00,\n  \"prazoMeses\": 12\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/api/simulacoes/simular",
+              "host": ["{{api_url}}"],
+              "path": ["api", "simulacoes", "simular"]
+            },
+            "description": "Simula um investimento calculando rentabilidade esperada.\n\n**Exemplo de entrada:**\n```json\n{\n  \"clienteId\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"produtoId\": 1,\n  \"valorInicial\": 10000.00,\n  \"prazoMeses\": 12\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Simulações do Cliente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/api/simulacoes?clienteId=123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{api_url}}"],
+              "path": ["api", "simulacoes"],
+              "query": [
+                {
+                  "key": "clienteId",
+                  "value": "123e4567-e89b-12d3-a456-426614174000",
+                  "description": "ID do cliente (GUID)"
+                }
+              ]
+            },
+            "description": "Lista todas as simulações realizadas por um cliente."
+          },
+          "response": []
+        },
+        {
+          "name": "Obter Simulações Agregadas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/api/simulacoes/agregadas?clienteId=123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{api_url}}"],
+              "path": ["api", "simulacoes", "agregadas"],
+              "query": [
+                {
+                  "key": "clienteId",
+                  "value": "123e4567-e89b-12d3-a456-426614174000"
+                }
+              ]
+            },
+            "description": "Retorna dados agregados das simulações do cliente."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para simulação de investimentos."
+    },
+    {
+      "name": "👤 Perfil de Risco",
+      "item": [
+        {
+          "name": "Calcular Perfil de Risco",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/api/perfil/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{api_url}}"],
+              "path": ["api", "perfil", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Calcula o perfil de risco do cliente baseado em seus investimentos e comportamento.\n\n**Perfis possíveis:**\n- Conservador\n- Moderado\n- Arrojado"
+          },
+          "response": []
+        },
+        {
+          "name": "Obter Produtos Recomendados",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/api/perfil/produtos-recomendados/Moderado",
+              "host": ["{{api_url}}"],
+              "path": ["api", "perfil", "produtos-recomendados", "Moderado"]
+            },
+            "description": "Lista produtos de investimento recomendados para um perfil específico.\n\n**Perfis válidos:**\n- Conservador\n- Moderado\n- Arrojado"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para cálculo de perfil de risco e recomendações."
+    },
+    {
+      "name": "📊 Investimentos",
+      "item": [
+        {
+          "name": "Listar Investimentos do Cliente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/api/investimentos/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{api_url}}"],
+              "path": [
+                "api",
+                "investimentos",
+                "123e4567-e89b-12d3-a456-426614174000"
+              ]
+            },
+            "description": "Retorna a carteira completa de investimentos do cliente."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para gestão de investimentos."
+    },
+    {
+      "name": "📈 Telemetria",
+      "item": [
+        {
+          "name": "Obter Métricas da API",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/api/telemetria",
+              "host": ["{{api_url}}"],
+              "path": ["api", "telemetria"]
+            },
+            "description": "Retorna métricas agregadas da API:\n- Total de simulações\n- Total de investimentos\n- Valor total investido\n- Distribuição por perfil de risco"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints de telemetria e métricas."
+    }
+  ],
+  "variable": [
+    {
+      "key": "api_url",
+      "value": "http://localhost:5058",
+      "type": "string"
+    },
+    {
+      "key": "keycloak_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "realm",
+      "value": "sipri-realm",
+      "type": "string"
+    },
+    {
+      "key": "client_secret",
+      "value": "Z3T3Jz3QWZ1Hdb0TpyW8JTKXytnmAylR",
+      "type": "string",
+      "description": "Secret do cliente cli-sir-sipri (já pré-configurado)"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string",
+      "description": "Token JWT (preenchido automaticamente após autenticação)"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string",
+      "description": "Refresh token (preenchido automaticamente)"
+    }
+  ]
+}
