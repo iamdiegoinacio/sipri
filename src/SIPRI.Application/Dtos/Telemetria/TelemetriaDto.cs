@@ -1,4 +1,4 @@
-﻿namespace SIPRI.Application.DTOs.Telemetria;
+namespace SIPRI.Application.DTOs.Telemetria;
 
 /// <summary>
 /// DTO para a resposta da consulta de Telemetria.

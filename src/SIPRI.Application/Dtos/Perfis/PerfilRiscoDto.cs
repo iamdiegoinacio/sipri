@@ -1,4 +1,4 @@
-﻿namespace SIPRI.Application.DTOs.Perfis;
+namespace SIPRI.Application.DTOs.Perfis;
 
 /// <summary>
 /// DTO para a resposta da consulta de Perfil de Risco.

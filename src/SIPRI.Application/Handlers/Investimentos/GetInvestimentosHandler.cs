@@ -1,21 +1,9 @@
-﻿using MediatR;
+using MediatR;
+using SIPRI.Application.Queries.Investimentos;
 using SIPRI.Application.DTOs.Investimentos;
 using SIPRI.Domain.Interfaces.Persistence;
 
-namespace SIPRI.Application.UseCases.Investimentos;
-
-/// <summary>
-/// Query para consultar o histórico de investimentos (carteira) de um cliente.
-/// </summary>
-public class GetInvestimentosQuery : IRequest<IEnumerable<HistoricoInvestimentoDto>>
-{
-    public Guid ClienteId { get; }
-
-    public GetInvestimentosQuery(Guid clienteId)
-    {
-        ClienteId = clienteId;
-    }
-}
+namespace SIPRI.Application.Handlers.Investimentos;
 
 /// <summary>
 /// Handler que busca os investimentos no repositório e mapeia para DTO.

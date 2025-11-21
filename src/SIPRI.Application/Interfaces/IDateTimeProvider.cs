@@ -1,4 +1,4 @@
-ï»¿namespace SIPRI.Application.Interfaces;
+namespace SIPRI.Application.Interfaces;
 
 /// <summary>
 /// Abstrai o acesso ao tempo do sistema (DateTime.Now/UtcNow).
@@ -6,12 +6,12 @@
 public interface IDateTimeProvider
 {
     /// <summary>
-    /// ObtÃ©m a data e hora atual em UTC.
+    /// Obtém a data e hora atual em UTC.
     /// </summary>
     DateTime UtcNow { get; }
 
     /// <summary>
-    /// ObtÃ©m a data atual (sem hora).
+    /// Obtém a data atual (sem hora).
     /// </summary>
     DateTime Today { get; }
 }

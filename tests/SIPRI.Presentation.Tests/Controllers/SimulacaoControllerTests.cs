@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SIPRI.Application.DTOs.Simulacoes;
-using SIPRI.Application.UseCases.Simulacoes;
+using SIPRI.Application.Commands.Simulacoes; using SIPRI.Application.Queries.Simulacoes;
 using SIPRI.Presentation.Controllers;
 
 namespace SIPRI.Presentation.Tests.Controllers;

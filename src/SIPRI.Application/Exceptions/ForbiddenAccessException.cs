@@ -1,17 +1,17 @@
-Ôªønamespace SIPRI.Application.Exceptions;
+namespace SIPRI.Application.Exceptions;
 
 /// <summary>
-/// Exce√ß√£o customizada para ser lan√ßada quando um usu√°rio est√°
-/// autenticado (possui um token v√°lido), mas n√£o possui autoriza√ß√£o
-/// (permiss√£o) para executar uma a√ß√£o ou acessar um recurso espec√≠fico.
+/// ExceÁ„o customizada para ser lanÁada quando um usu·rio est·
+/// autenticado (possui um token v·lido), mas n„o possui autorizaÁ„o
+/// (permiss„o) para executar uma aÁ„o ou acessar um recurso especÌfico.
 /// Ex: Cliente "123" tentando acessar "GET /investimentos/456".
 /// A camada de Presentation (API) deve ser configurada para capturar
-/// esta exce√ß√£o e retornar um HTTP 403 Forbidden.
+/// esta exceÁ„o e retornar um HTTP 403 Forbidden.
 /// </summary>
 public class ForbiddenAccessException : Exception
 {
     public ForbiddenAccessException()
-        : base("O usu√°rio n√£o tem permiss√£o para executar esta a√ß√£o.")
+        : base("O usu·rio n„o tem permiss„o para executar esta aÁ„o.")
     {
     }
 

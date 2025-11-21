@@ -1,7 +1,7 @@
-ï»¿namespace SIPRI.Application.DTOs.Simulacoes;
+namespace SIPRI.Application.DTOs.Simulacoes;
 
 /// <summary>
-/// DTO para a resposta de uma simulaÃ§Ã£o bem-sucedida.
+/// DTO para a resposta de uma simulação bem-sucedida.
 /// </summary>
 public class SimulacaoResponseDto
 {
@@ -11,7 +11,7 @@ public class SimulacaoResponseDto
 }
 
 /// <summary>
-/// Parte do DTO de resposta da simulaÃ§Ã£o.
+/// Parte do DTO de resposta da simulação.
 /// </summary>
 public class ProdutoValidadoDto
 {
@@ -23,7 +23,7 @@ public class ProdutoValidadoDto
 }
 
 /// <summary>
-/// Parte do DTO de resposta da simulaÃ§Ã£o.
+/// Parte do DTO de resposta da simulação.
 /// </summary>
 public class ResultadoSimulacaoDto
 {

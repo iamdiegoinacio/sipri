@@ -1,4 +1,4 @@
-Ôªøusing System.Diagnostics;
+using System.Diagnostics;
 using SIPRI.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 
@@ -15,15 +15,15 @@ public class TelemetryMiddleware : IMiddleware
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        // Verifica se devemos ignorar esta rota ANTES de iniciar o cron√¥metro
+        // Verifica se devemos ignorar esta rota ANTES de iniciar o cronÙmetro
         if (ShouldIgnore(context.Request.Path))
         {
-            // Apenas repassa a requisi√ß√£o e sai. N√£o mede nada.
+            // Apenas repassa a requisiÁ„o e sai. N„o mede nada.
             await next(context);
             return;
         }
 
-        // Se chegou aqui, √© uma rota v√°lida para medi√ß√£o
+        // Se chegou aqui, È uma rota v·lida para mediÁ„o
         var stopwatch = Stopwatch.StartNew();
 
         try
@@ -41,7 +41,7 @@ public class TelemetryMiddleware : IMiddleware
     }
 
     /// <summary>
-    /// Define quais rotas s√£o consideradas "ru√≠do" e n√£o devem ser medidas.
+    /// Define quais rotas s„o consideradas "ruÌdo" e n„o devem ser medidas.
     /// </summary>
     private static bool ShouldIgnore(PathString path)
     {

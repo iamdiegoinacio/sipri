@@ -1,16 +1,9 @@
-﻿using MediatR;
+using MediatR;
+using SIPRI.Application.Queries.Telemetria;
 using SIPRI.Application.DTOs.Telemetria;
 using SIPRI.Application.Interfaces;
 
-namespace SIPRI.Application.UseCases.Telemetria;
-
-/// <summary>
-/// Query para consultar a saúde e performance da API.
-/// </summary>
-public class GetTelemetriaQuery : IRequest<TelemetriaDto>
-{
-    public GetTelemetriaQuery() { }
-}
+namespace SIPRI.Application.Handlers.Telemetria;
 
 public class GetTelemetriaHandler : IRequestHandler<GetTelemetriaQuery, TelemetriaDto>
 {

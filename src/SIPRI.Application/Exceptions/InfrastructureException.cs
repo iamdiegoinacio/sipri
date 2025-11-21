@@ -1,21 +1,21 @@
-ï»¿namespace SIPRI.Application.Exceptions;
+namespace SIPRI.Application.Exceptions;
 
 /// <summary>
-/// LanÃ§ada pela camada de AplicaÃ§Ã£o ao capturar uma exceÃ§Ã£o de Infraestrutura
+/// Lançada pela camada de Aplicação ao capturar uma exceção de Infraestrutura
 /// que indica uma falha externa (ex: timeout do banco de dados, API de 
 /// terceiros fora do ar).
 /// Isso permite que o middleware diferencie um bug (500) de uma
-/// indisponibilidade de serviÃ§o (503).
+/// indisponibilidade de serviço (503).
 /// </summary>
 public class InfrastructureException : Exception
 {
     public InfrastructureException(string serviceName, string message)
-        : base($"O serviÃ§o externo '{serviceName}' falhou: {message}")
+        : base($"O serviço externo '{serviceName}' falhou: {message}")
     {
     }
 
     public InfrastructureException(string serviceName, string message, Exception innerException)
-        : base($"O serviÃ§o externo '{serviceName}' falhou: {message}", innerException)
+        : base($"O serviço externo '{serviceName}' falhou: {message}", innerException)
     {
     }
 }

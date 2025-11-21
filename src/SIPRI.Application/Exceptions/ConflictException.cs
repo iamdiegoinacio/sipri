@@ -1,13 +1,13 @@
-Ôªønamespace SIPRI.Application.Exceptions;
+namespace SIPRI.Application.Exceptions;
 
 /// <summary>
-/// Exce√ß√£o customizada para ser lan√ßada quando uma solicita√ß√£o v√°lida
-/// n√£o pode ser completada devido a um conflito com o estado atual
+/// ExceÁ„o customizada para ser lanÁada quando uma solicitaÁ„o v·lida
+/// n„o pode ser completada devido a um conflito com o estado atual
 /// do recurso no servidor.
-/// Ex: Uma falha de concorr√™ncia otimista (quando um usu√°rio tenta salvar
-///    dados desatualizados que j√° foram modificados por outro usu√°rio).
+/// Ex: Uma falha de concorrÍncia otimista (quando um usu·rio tenta salvar
+///    dados desatualizados que j· foram modificados por outro usu·rio).
 /// A camada de Presentation (API) deve ser configurada para capturar
-/// esta exce√ß√£o e retornar um HTTP 409 Conflict.
+/// esta exceÁ„o e retornar um HTTP 409 Conflict.
 /// </summary>
 public class ConflictException : Exception
 {

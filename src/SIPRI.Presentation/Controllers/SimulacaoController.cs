@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SIPRI.Application.DTOs.Simulacoes; 
-using SIPRI.Application.UseCases.Simulacoes;
+using SIPRI.Application.Commands.Simulacoes;
+using SIPRI.Application.Queries.Simulacoes;
 
 namespace SIPRI.Presentation.Controllers;
 
@@ -18,12 +19,6 @@ public class SimulacaoController : ControllerBase
         _mediator = mediator;
     }
 
-    /// <summary>
-    /// Solicita uma nova simulação de investimento.
-    /// </summary>
-    /// <param name="request">Dados da simulação.</param>
-    /// <param name="cancellationToken">Token de cancelamento da requisição.</param>
-    /// <returns>Resultado da simulação.</returns>
     [HttpPost("simular-investimento")]
     [ProducesResponseType(typeof(SimulacaoResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -37,12 +32,6 @@ public class SimulacaoController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>
-    /// Obtém o histórico de simulações de um cliente.
-    /// </summary>
-    /// <param name="clienteId">Identificador único do cliente.</param>
-    /// <param name="cancellationToken">Token de cancelamento da requisição.</param>
-    /// <returns>Histórico de simulações.</returns>
     [HttpGet("simulacoes")]
     [ProducesResponseType(typeof(IEnumerable<HistoricoSimulacaoDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -55,11 +44,6 @@ public class SimulacaoController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>
-    /// Obtém dados agregados das simulações por produto e dia.
-    /// </summary>
-    /// <param name="cancellationToken">Token de cancelamento da requisição.</param>
-    /// <returns>Dados agregados das simulações.</returns>
     [HttpGet("simulacoes/por-produto-dia")]
     [ProducesResponseType(typeof(IEnumerable<SimulacaoAgregadaDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -1,7 +1,10 @@
-Ôªøusing Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using SIPRI.Domain.Interfaces.Services;
 using SIPRI.Domain.Services;
+using FluentValidation;
+using MediatR;
+using SIPRI.Application.Behaviors;
 
 namespace SIPRI.Application;
 
@@ -9,23 +12,33 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        var assembly = Assembly.GetExecutingAssembly();
+
         // 1. Registra o MediatR
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
+
+        // 2. Registra FluentValidation
+        // Escaneia o assembly atual e registra todos os validadores
+        services.AddValidatorsFromAssembly(assembly);
+
+        // 3. Registra ValidationBehavior como Pipeline Behavior do MediatR
+        // Isso faz com que todas as requests passem pelo ValidationBehavior antes do handler
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         // ============================================================
-        // 2. REGISTRO DOS SERVI√áOS DE DOM√çNIO (A CORRE√á√ÉO)
+        // 4. REGISTRO DOS SERVI«OS DE DOMÕNIO
         // ============================================================
 
-        // Servi√ßos Principais (Orquestradores do Dom√≠nio)
+        // ServiÁos Principais (Orquestradores do DomÌnio)
         services.AddScoped<ICalculadoraInvestimentoService, CalculadoraInvestimentoService>();
         services.AddScoped<IMotorPerfilRiscoServico, MotorPerfilRiscoServico>();
 
-        // Estrat√©gias de C√°lculo (Strategy Pattern)
-        // Registramos todas as implementa√ß√µes para a mesma interface
+        // EstratÈgias de C·lculo (Strategy Pattern)
+        // Registramos todas as implementaÁıes para a mesma interface
         services.AddScoped<IRegraCalculoInvestimento, RegraCalculoCDB>();
         services.AddScoped<IRegraCalculoInvestimento, RegraCalculoFundo>();
 
-        // Estrat√©gias de Pontua√ß√£o de Risco
+        // EstratÈgias de PontuaÁ„o de Risco
         services.AddScoped<IRegraDePontuacao, RegraPontuacaoFrequencia>();
         services.AddScoped<IRegraDePontuacao, RegraPontuacaoPreferencia>();
         services.AddScoped<IRegraDePontuacao, RegraPontuacaoVolume>();

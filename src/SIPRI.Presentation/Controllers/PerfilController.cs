@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SIPRI.Application.DTOs.Perfis;
-using SIPRI.Application.UseCases.Perfis;
+using SIPRI.Application.Queries.Perfis;
 
 namespace SIPRI.Presentation.Controllers;
 
@@ -18,12 +18,6 @@ public class PerfilController : ControllerBase
         _mediator = mediator;
     }
 
-    /// <summary>
-    /// Calcula e retorna o perfil de risco do cliente.
-    /// </summary>
-    /// <param name="clienteId">Identificador único do cliente.</param>
-    /// <param name="cancellationToken">Token de cancelamento da requisição.</param>
-    /// <returns>Perfil de risco calculado.</returns>
     [HttpGet("perfil-risco/{clienteId}")]
     [ProducesResponseType(typeof(PerfilRiscoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -36,12 +30,6 @@ public class PerfilController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>
-    /// Recomenda produtos com base no perfil de risco.
-    /// </summary>
-    /// <param name="perfil">Perfil de risco do cliente (ex: Conservador, Moderado, Arrojado).</param>
-    /// <param name="cancellationToken">Token de cancelamento da requisição.</param>
-    /// <returns>Lista de produtos recomendados.</returns>
     [HttpGet("produtos-recomendados/{perfil}")]
     [ProducesResponseType(typeof(IEnumerable<ProdutoRecomendadoDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

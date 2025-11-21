@@ -1,16 +1,9 @@
-﻿using MediatR;
+using MediatR;
+using SIPRI.Application.Queries.Simulacoes;
 using SIPRI.Application.DTOs.Simulacoes;
 using SIPRI.Domain.Interfaces.Persistence;
 
-namespace SIPRI.Application.UseCases.Simulacoes;
-
-/// <summary>
-/// Query para obter dados agregados das simulações (por produto e dia).
-/// </summary>
-public class GetSimulacoesAgregadasQuery : IRequest<IEnumerable<SimulacaoAgregadaDto>>
-{
-    public GetSimulacoesAgregadasQuery() { }
-}
+namespace SIPRI.Application.Handlers.Simulacoes;
 
 public class GetSimulacoesAgregadasHandler : IRequestHandler<GetSimulacoesAgregadasQuery, IEnumerable<SimulacaoAgregadaDto>>
 {

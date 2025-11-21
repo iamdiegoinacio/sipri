@@ -1,7 +1,8 @@
 using FluentAssertions;
 using Moq;
 using SIPRI.Application.DTOs.Investimentos;
-using SIPRI.Application.UseCases.Investimentos;
+using SIPRI.Application.Queries.Investimentos;
+using SIPRI.Application.Handlers.Investimentos;
 using SIPRI.Domain.Entities;
 using SIPRI.Domain.Interfaces.Persistence;
 
@@ -60,3 +61,4 @@ public class GetInvestimentosHandlerTests
         result.Should().BeEmpty();
     }
 }
+

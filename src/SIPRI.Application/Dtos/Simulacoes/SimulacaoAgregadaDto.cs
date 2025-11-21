@@ -1,7 +1,7 @@
-ï»¿namespace SIPRI.Application.DTOs.Simulacoes;
+namespace SIPRI.Application.DTOs.Simulacoes;
 
 /// <summary>
-/// DTO para a resposta da consulta de SimulaÃ§Ãµes Agregadas.
+/// DTO para a resposta da consulta de Simulações Agregadas.
 /// </summary>
 public class SimulacaoAgregadaDto
 {

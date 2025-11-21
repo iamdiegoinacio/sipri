@@ -1,21 +1,9 @@
-﻿using MediatR;
+using MediatR;
+using SIPRI.Application.Queries.Simulacoes;
 using SIPRI.Application.DTOs.Simulacoes;
 using SIPRI.Domain.Interfaces.Persistence;
 
-namespace SIPRI.Application.UseCases.Simulacoes;
-
-/// <summary>
-/// Query para listar o histórico de simulações realizadas por um cliente específico.
-/// </summary>
-public class GetSimulacoesQuery : IRequest<IEnumerable<HistoricoSimulacaoDto>>
-{
-    public Guid ClienteId { get; }
-
-    public GetSimulacoesQuery(Guid clienteId)
-    {
-        ClienteId = clienteId;
-    }
-}
+namespace SIPRI.Application.Handlers.Simulacoes;
 
 public class GetSimulacoesHandler : IRequestHandler<GetSimulacoesQuery, IEnumerable<HistoricoSimulacaoDto>>
 {

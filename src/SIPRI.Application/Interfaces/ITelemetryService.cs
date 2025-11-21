@@ -1,4 +1,4 @@
-ï»¿using SIPRI.Application.DTOs.Telemetria;
+using SIPRI.Application.DTOs.Telemetria;
 
 namespace SIPRI.Application.Interfaces;
 
@@ -7,6 +7,6 @@ public interface ITelemetryService
     // Leitura (usado pelo Handler)
     Task<TelemetriaDto> GetMetricsAsync();
 
-    // GravaÃ§Ã£o (usado pelo Middleware)
+    // Gravação (usado pelo Middleware)
     void RecordRequest(string endpointName, long elapsedMs);
 }

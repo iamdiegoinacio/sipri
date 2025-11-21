@@ -1,7 +1,8 @@
 using FluentAssertions;
 using Moq;
 using SIPRI.Application.Interfaces;
-using SIPRI.Application.UseCases.Perfis;
+using SIPRI.Application.Queries.Perfis;
+using SIPRI.Application.Handlers.Perfis;
 using SIPRI.Domain.Entities;
 using SIPRI.Domain.Interfaces.Persistence;
 using SIPRI.Domain.Interfaces.Services;
@@ -54,3 +55,4 @@ public class GetPerfilRiscoHandlerTests
         result.Descricao.Should().Be(perfilEsperado.Descricao);
     }
 }
+

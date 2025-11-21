@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SIPRI.Application.DTOs.Perfis;
-using SIPRI.Application.UseCases.Perfis;
+using SIPRI.Application.Queries.Perfis;
 using SIPRI.Presentation.Controllers;
 
 namespace SIPRI.Presentation.Tests.Controllers;

@@ -1,4 +1,5 @@
-﻿using MediatR;
+using MediatR;
+using SIPRI.Application.Commands.Simulacoes;
 using SIPRI.Application.DTOs.Simulacoes;
 using SIPRI.Application.Exceptions;
 using SIPRI.Application.Interfaces;
@@ -7,21 +8,7 @@ using SIPRI.Domain.Entities;
 using SIPRI.Domain.Interfaces.Services;
 using SIPRI.Domain.Interfaces.Persistence;
 
-namespace SIPRI.Application.UseCases.Simulacoes;
-
-/// <summary>
-/// Comando (CQRS) para realizar uma simulação de investimento.
-/// Implementa IRequest do MediatR retornando o DTO de resposta.
-/// </summary>
-public class SimularInvestimentoCommand : IRequest<SimulacaoResponseDto>
-{
-    public SimulacaoRequestDto RequestData { get; }
-
-    public SimularInvestimentoCommand(SimulacaoRequestDto requestData)
-    {
-        RequestData = requestData ?? throw new ArgumentNullException(nameof(requestData));
-    }
-}
+namespace SIPRI.Application.Handlers.Simulacoes;
 
 /// <summary>
 /// Handler que processa o SimularInvestimentoCommand.

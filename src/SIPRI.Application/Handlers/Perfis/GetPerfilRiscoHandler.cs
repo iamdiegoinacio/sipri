@@ -1,23 +1,11 @@
-﻿using MediatR;
+using MediatR;
+using SIPRI.Application.Queries.Perfis;
 using SIPRI.Application.DTOs.Perfis;
 using SIPRI.Application.Interfaces;
 using SIPRI.Domain.Interfaces.Persistence;
 using SIPRI.Domain.Interfaces.Services;
 
-namespace SIPRI.Application.UseCases.Perfis;
-
-/// <summary>
-/// Query para consultar e calcular o perfil de risco atual do cliente.
-/// </summary>
-public class GetPerfilRiscoQuery : IRequest<PerfilRiscoDto>
-{
-    public Guid ClienteId { get; }
-
-    public GetPerfilRiscoQuery(Guid clienteId)
-    {
-        ClienteId = clienteId;
-    }
-}
+namespace SIPRI.Application.Handlers.Perfis;
 
 /// <summary>
 /// Handler que orquestra a obtenção de dados e o acionamento do Motor de Risco.

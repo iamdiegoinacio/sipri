@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Moq;
-using SIPRI.Application.UseCases.Perfis;
+using SIPRI.Application.Queries.Perfis;
+using SIPRI.Application.Handlers.Perfis;
 using SIPRI.Domain.Entities;
 using SIPRI.Domain.Interfaces.Persistence;
 
@@ -32,3 +33,4 @@ public class GetProdutosRecomendadosHandlerTests
         result.First().Nome.Should().Be("CDB");
     }
 }
+

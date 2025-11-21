@@ -1,21 +1,9 @@
-﻿using MediatR;
+using MediatR;
+using SIPRI.Application.Queries.Perfis;
 using SIPRI.Application.DTOs.Perfis;
 using SIPRI.Domain.Interfaces.Persistence;
 
-namespace SIPRI.Application.UseCases.Perfis;
-
-/// <summary>
-/// Query para listar produtos de investimento adequados a um perfil de risco específico.
-/// </summary>
-public class GetProdutosRecomendadosQuery : IRequest<IEnumerable<ProdutoRecomendadoDto>>
-{
-    public string Perfil { get; }
-
-    public GetProdutosRecomendadosQuery(string perfil)
-    {
-        Perfil = perfil;
-    }
-}
+namespace SIPRI.Application.Handlers.Perfis;
 
 /// <summary>
 /// Handler que busca os produtos filtrados pelo perfil no repositório.
