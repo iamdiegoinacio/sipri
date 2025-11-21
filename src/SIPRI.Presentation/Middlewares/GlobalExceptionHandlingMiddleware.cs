@@ -1,7 +1,10 @@
-﻿using SIPRI.Application.Exceptions; 
-using SIPRI.Domain.Exceptions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SIPRI.Application.Exceptions;
+using SIPRI.Domain.Exceptions;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace SIPRI.Presentation.Middlewares;
 
@@ -9,7 +12,6 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
 {
     private readonly ILogger<GlobalExceptionHandlingMiddleware> _logger;
 
-    // Injeta o Logger para logar o Erro 500 (o seu "Ponto 7")
     public GlobalExceptionHandlingMiddleware(ILogger<GlobalExceptionHandlingMiddleware> logger)
     {
         _logger = logger;
@@ -19,12 +21,10 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
     {
         try
         {
-            // Tenta executar o próximo middleware no pipeline
             await next(context);
         }
         catch (Exception ex)
         {
-            // Se uma exceção for capturada, chama nosso manipulador
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -33,41 +33,52 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
     {
         context.Response.ContentType = "application/problem+json";
 
-        // --- O "Tradutor" (Mapeia Exceção -> StatusCode) ---
+        // Mapeamento de Exceção para Status Code e Detalhes
         var (statusCode, title, detail) = exception switch
         {
-            // Seus erros 4xx (Cliente)
             ValidationException e => (StatusCodes.Status400BadRequest, "Erro de Validação", e.Message),
             DomainRuleException e => (StatusCodes.Status400BadRequest, "Regra de Negócio Violada", e.Message),
             ForbiddenAccessException e => (StatusCodes.Status403Forbidden, "Acesso Negado", e.Message),
             NotFoundException e => (StatusCodes.Status404NotFound, "Recurso Não Encontrado", e.Message),
             ConflictException e => (StatusCodes.Status409Conflict, "Conflito de Recurso", e.Message),
-
-            // Erro 5xx (Servidor Externo)
             InfrastructureException e => (StatusCodes.Status503ServiceUnavailable, "Serviço Indisponível", e.Message),
-
-            // --- O "Catch-All"---
-            _ => (StatusCodes.Status500InternalServerError, "Erro Interno Inesperado", "Ocorreu um erro inesperado. Tente novamente.")
+            _ => (StatusCodes.Status500InternalServerError, "Erro Interno do Servidor", "Ocorreu um erro inesperado ao processar sua solicitação.")
         };
 
         context.Response.StatusCode = statusCode;
 
-        // Loga o erro 500 como CRÍTICO (o único que é um bug)
+        // Loga erro 500 como Error, outros como Warning ou Information
         if (statusCode == StatusCodes.Status500InternalServerError)
         {
-            _logger.LogError(exception, "Erro interno inesperado capturado pelo middleware: {Message}", exception.Message);
+            _logger.LogError(exception, "Erro crítico não tratado: {Message}", exception.Message);
+        }
+        else
+        {
+            _logger.LogWarning("Erro tratado ({StatusCode}): {Message}", statusCode, exception.Message);
         }
 
-        // Formata a resposta JSON
-        var response = new
+        // Cria o objeto ProblemDetails (Padrão RFC 7807)
+        var problemDetails = new ProblemDetails
         {
             Status = statusCode,
             Title = title,
             Detail = detail,
-            // Se for validação, retorna os detalhes
-            Errors = exception is ValidationException vex ? vex.Errors : null
+            Instance = context.Request.Path,
+            Type = $"https://httpstatuses.com/{statusCode}"
         };
 
-        await context.Response.WriteAsJsonAsync(response);
+        // Adiciona TraceId para rastreabilidade
+        var traceId = Activity.Current?.Id ?? context.TraceIdentifier;
+        problemDetails.Extensions.Add("traceId", traceId);
+
+        // Se for erro de validação, adiciona os erros específicos
+        if (exception is ValidationException validationException)
+        {
+            problemDetails.Extensions.Add("errors", validationException.Errors);
+        }
+
+        // Serializa e escreve a resposta
+        var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+        await context.Response.WriteAsJsonAsync(problemDetails, jsonOptions);
     }
 }

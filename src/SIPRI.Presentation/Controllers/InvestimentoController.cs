@@ -22,12 +22,18 @@ public class InvestimentoController : ControllerBase
     /// <summary>
     /// Obtém o histórico de investimentos (carteira) do cliente.
     /// </summary>
+    /// <param name="clienteId">Identificador único do cliente.</param>
+    /// <param name="cancellationToken">Token de cancelamento da requisição.</param>
+    /// <returns>Lista de investimentos do cliente.</returns>
     [HttpGet("{clienteId}")]
     [ProducesResponseType(typeof(IEnumerable<HistoricoInvestimentoDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetInvestimentos(Guid clienteId)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetInvestimentos(Guid clienteId, CancellationToken cancellationToken)
     {
         var query = new GetInvestimentosQuery(clienteId);
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(query, cancellationToken);
         return Ok(result);
     }
 }
