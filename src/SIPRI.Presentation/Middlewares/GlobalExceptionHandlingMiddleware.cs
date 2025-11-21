@@ -1,4 +1,4 @@
-Ôªøusing Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SIPRI.Application.Exceptions;
@@ -33,16 +33,16 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
     {
         context.Response.ContentType = "application/problem+json";
 
-        // Mapeamento de Exce√ß√£o para Status Code e Detalhes
+        // Mapeamento de ExceÁ„o para Status Code e Detalhes
         var (statusCode, title, detail) = exception switch
         {
-            ValidationException e => (StatusCodes.Status400BadRequest, "Erro de Valida√ß√£o", e.Message),
-            DomainRuleException e => (StatusCodes.Status400BadRequest, "Regra de Neg√≥cio Violada", e.Message),
+            ValidationException e => (StatusCodes.Status400BadRequest, "Erro de ValidaÁ„o", e.Message),
+            DomainRuleException e => (StatusCodes.Status400BadRequest, "Regra de NegÛcio Violada", e.Message),
             ForbiddenAccessException e => (StatusCodes.Status403Forbidden, "Acesso Negado", e.Message),
-            NotFoundException e => (StatusCodes.Status404NotFound, "Recurso N√£o Encontrado", e.Message),
+            NotFoundException e => (StatusCodes.Status404NotFound, "Recurso N„o Encontrado", e.Message),
             ConflictException e => (StatusCodes.Status409Conflict, "Conflito de Recurso", e.Message),
-            InfrastructureException e => (StatusCodes.Status503ServiceUnavailable, "Servi√ßo Indispon√≠vel", e.Message),
-            _ => (StatusCodes.Status500InternalServerError, "Erro Interno do Servidor", "Ocorreu um erro inesperado ao processar sua solicita√ß√£o.")
+            InfrastructureException e => (StatusCodes.Status503ServiceUnavailable, "ServiÁo IndisponÌvel", e.Message),
+            _ => (StatusCodes.Status500InternalServerError, "Erro Interno do Servidor", "Ocorreu um erro inesperado ao processar sua solicitaÁ„o.")
         };
 
         context.Response.StatusCode = statusCode;
@@ -50,14 +50,14 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         // Loga erro 500 como Error, outros como Warning ou Information
         if (statusCode == StatusCodes.Status500InternalServerError)
         {
-            _logger.LogError(exception, "Erro cr√≠tico n√£o tratado: {Message}", exception.Message);
+            _logger.LogError(exception, "Erro crÌtico n„o tratado: {Message}", exception.Message);
         }
         else
         {
             _logger.LogWarning("Erro tratado ({StatusCode}): {Message}", statusCode, exception.Message);
         }
 
-        // Cria o objeto ProblemDetails (Padr√£o RFC 7807)
+        // Cria o objeto ProblemDetails (Padr„o RFC 7807)
         var problemDetails = new ProblemDetails
         {
             Status = statusCode,
@@ -71,7 +71,7 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         var traceId = Activity.Current?.Id ?? context.TraceIdentifier;
         problemDetails.Extensions.Add("traceId", traceId);
 
-        // Se for erro de valida√ß√£o, adiciona os erros espec√≠ficos
+        // Se for erro de validaÁ„o, adiciona os erros especÌficos
         if (exception is ValidationException validationException)
         {
             problemDetails.Extensions.Add("errors", validationException.Errors);
