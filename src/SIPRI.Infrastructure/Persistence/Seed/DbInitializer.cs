@@ -7,10 +7,10 @@ public static class DbInitializer
 {
     public static void Seed(AppDbContext context)
     {
-        // Garante que o banco existe
+        // Garante que o banco existe (Cria se não existir)
         context.Database.EnsureCreated();
 
-        // Se já tem produtos, não faz nada
+        // Verifica se já existem produtos. Se sim, não faz nada (Seed é executado apenas uma vez)
         if (context.Produtos.Any())
         {
             return;
@@ -18,10 +18,24 @@ public static class DbInitializer
 
         var produtos = new ProdutoInvestimento[]
         {
-            new ProdutoInvestimento(Guid.NewGuid(), "CDB Caixa 2026", "CDB", 0.12m, "Baixo", 1),
-            new ProdutoInvestimento(Guid.NewGuid(), "LCI CDI 90%", "LCI", 0.11m, "Baixo", 1),
-            new ProdutoInvestimento(Guid.NewGuid(), "Fundo Ações Tech", "Fundo", 0.18m, "Alto", 3),
-            new ProdutoInvestimento(Guid.NewGuid(), "Fundo Multimercado", "Fundo", 0.14m, "Moderado", 2)
+            // --- 1. Produtos Conservadores (Risco Baixo - Nível 1) ---
+            new ProdutoInvestimento(Guid.NewGuid(), "CDB Caixa Fácil", "CDB", 0.1050m, "Baixo", 1),
+            new ProdutoInvestimento(Guid.NewGuid(), "Tesouro Selic 2029", "Tesouro", 0.1075m, "Baixo", 1),
+            new ProdutoInvestimento(Guid.NewGuid(), "LCI Habitacional 90 dias", "LCI", 0.0980m, "Baixo", 1),
+            new ProdutoInvestimento(Guid.NewGuid(), "Fundo DI Referenciado", "Fundo", 0.1020m, "Baixo", 1),
+
+            // --- 2. Produtos Moderados (Risco Moderado - Nível 2) ---
+            new ProdutoInvestimento(Guid.NewGuid(), "CDB Pré-Fixado 2028", "CDB", 0.1250m, "Moderado", 2),
+            new ProdutoInvestimento(Guid.NewGuid(), "Fundo Multimercado Dinâmico", "Fundo", 0.1400m, "Moderado", 2),
+            new ProdutoInvestimento(Guid.NewGuid(), "Debênture Incentivada Infra", "Debenture", 0.1350m, "Moderado", 2),
+            new ProdutoInvestimento(Guid.NewGuid(), "LCA Agronegócio 2 Anos", "LCA", 0.1150m, "Moderado", 2),
+
+            // --- 3. Produtos Agressivos (Risco Alto - Nível 3) ---
+            new ProdutoInvestimento(Guid.NewGuid(), "Fundo de Ações Ibovespa", "Fundo", 0.1800m, "Alto", 3),
+            new ProdutoInvestimento(Guid.NewGuid(), "ETF Small Caps", "ETF", 0.2200m, "Alto", 3),
+            new ProdutoInvestimento(Guid.NewGuid(), "COE Tecnologia Global", "COE", 0.2500m, "Alto", 3),
+            // Rentabilidade base em dólar varia, mas risco é alto. Valor base simbólico:
+            new ProdutoInvestimento(Guid.NewGuid(), "Fundo Cambial Dólar", "Fundo", 0.0500m, "Alto", 3)
         };
 
         context.Produtos.AddRange(produtos);
