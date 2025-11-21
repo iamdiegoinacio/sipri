@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SIPRI.Application.DTOs.Telemetria;
-using SIPRI.Application.UseCases.Telemetria;
+using SIPRI.Application.Queries.Telemetria;
 using SIPRI.Presentation.Controllers;
 
 namespace SIPRI.Presentation.Tests.Controllers;
