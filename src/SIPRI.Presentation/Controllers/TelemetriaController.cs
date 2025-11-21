@@ -22,12 +22,16 @@ public class TelemetriaController : ControllerBase
     /// <summary>
     /// Exibe métricas de uso e performance da API.
     /// </summary>
+    /// <param name="cancellationToken">Token de cancelamento da requisição.</param>
+    /// <returns>Métricas de telemetria.</returns>
     [HttpGet]
     [ProducesResponseType(typeof(TelemetriaDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetTelemetria()
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetTelemetria(CancellationToken cancellationToken)
     {
         var query = new GetTelemetriaQuery();
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(query, cancellationToken);
         return Ok(result);
     }
 }
