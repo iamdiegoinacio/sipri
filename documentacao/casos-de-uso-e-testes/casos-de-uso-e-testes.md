@@ -226,9 +226,9 @@ Path Parameter: clienteId=3fa85f64-5717-4562-b3fc-2c963f66afa6
 
 **Perfis Possíveis:**
 
-- `Conservador` (pontuação < 40): Baixa tolerância a riscos
+- `Baixo` (pontuação < 40): Baixa tolerância a riscos
 - `Moderado` (pontuação 40-70): Tolerância média a riscos
-- `Arrojado` (pontuação > 70): Alta tolerância a riscos
+- `Alto` (pontuação > 70): Alta tolerância a riscos
 
 ---
 
