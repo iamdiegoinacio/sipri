@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# sipri
-=======
 # 🛡️ SIPRI - Sistema de Investimentos e Perfil de Risco Inteligente
 
 ![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet&logoColor=white)
