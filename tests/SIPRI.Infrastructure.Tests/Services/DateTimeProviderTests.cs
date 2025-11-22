@@ -10,6 +10,7 @@ public class DateTimeProviderTests
     {
         // Arrange
         var provider = new DateTimeProvider();
+        var before = DateTime.UtcNow;
 
         // Act
         var result = provider.UtcNow;

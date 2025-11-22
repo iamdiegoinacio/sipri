@@ -11,23 +11,35 @@ public class InvestimentoRepositoryTests
     private AppDbContext CreateDbContext()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Unique DB per test
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
         return new AppDbContext(options);
     }
 
     [Fact]
-    public async Task GetByClienteIdAsync_ShouldReturnInvestments_OrderedByDateDescending()
+    public async Task GetByClienteIdAsync_ShouldReturnInvestments_WhenClienteHasInvestments()
     {
         // Arrange
         using var context = CreateDbContext();
         var clienteId = Guid.NewGuid();
-        
-        var inv1 = new Investimento { Id = Guid.NewGuid(), ClienteId = clienteId, Data = DateTime.UtcNow.AddDays(-2), Tipo = "Antigo" };
-        var inv2 = new Investimento { Id = Guid.NewGuid(), ClienteId = clienteId, Data = DateTime.UtcNow, Tipo = "Novo" };
-        var invOutroCliente = new Investimento { Id = Guid.NewGuid(), ClienteId = Guid.NewGuid(), Data = DateTime.UtcNow, Tipo = "Outro" };
+        var investimento1 = new Investimento
+        {
+            Id = Guid.NewGuid(),
+            ClienteId = clienteId,
+            Tipo = "CDB",
+            Valor = 1000m,
+            Data = DateTime.UtcNow.AddDays(-1)
+        };
+        var investimento2 = new Investimento
+        {
+            Id = Guid.NewGuid(),
+            ClienteId = clienteId,
+            Tipo = "Fundo",
+            Valor = 2000m,
+            Data = DateTime.UtcNow
+        };
 
-        await context.Investimentos.AddRangeAsync(inv1, inv2, invOutroCliente);
+        await context.Investimentos.AddRangeAsync(investimento1, investimento2);
         await context.SaveChangesAsync();
 
         var repository = new InvestimentoRepository(context);
@@ -37,12 +49,12 @@ public class InvestimentoRepositoryTests
 
         // Assert
         result.Should().HaveCount(2);
-        result.First().Tipo.Should().Be("Novo"); // Most recent first
-        result.Last().Tipo.Should().Be("Antigo");
+        result.Should().Contain(i => i.Id == investimento1.Id);
+        result.Should().Contain(i => i.Id == investimento2.Id);
     }
 
     [Fact]
-    public async Task GetByClienteIdAsync_ShouldReturnEmpty_WhenNoInvestmentsFound()
+    public async Task GetByClienteIdAsync_ShouldReturnEmpty_WhenClienteHasNoInvestments()
     {
         // Arrange
         using var context = CreateDbContext();

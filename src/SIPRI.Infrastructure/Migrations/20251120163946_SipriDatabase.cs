@@ -1,11 +1,13 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 namespace SIPRI.Infrastructure.Migrations
 {
     /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public partial class SipriDatabase : Migration
     {
         /// <inheritdoc />
