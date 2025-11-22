@@ -1,0 +1,89 @@
+services:
+  # 1. SQL Server (Banco de dados da aplicação SIPRI)
+  sipri-sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sipri-sql
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${SA_PASSWORD}
+    ports:
+      - "${DB_PORT}:1433"
+    volumes:
+      - sqldata:/var/opt/mssql
+    networks:
+      - sipri-network
+    
+    # Healthcheck SQL Server 2022
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$$MSSQL_SA_PASSWORD" -Q "SELECT 1" -C
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  # 2. Keycloak (Usando banco de dados nativo H2)
+  sipri-keycloak:
+    image: quay.io/keycloak/keycloak:26.4.5
+    container_name: sipri-keycloak
+    command: start-dev --import-realm
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN_USER}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASS}
+    ports:
+      - "${KEYCLOAK_PORT}:8080"
+    volumes:
+      - ./keycloak-data/realm-export.json:/opt/keycloak/data/import/realm-export.json
+    networks:
+      - sipri-network
+
+  # 3. API .NET
+  sipri-api:
+    build:
+      context: .
+      dockerfile: src/SIPRI.Host/Dockerfile
+    container_name: sipri-api
+    environment:
+      - ConnectionStrings__DefaultConnection=${API_CONNECTION_STRING}
+      
+      # Authority: Usa rede interna para buscar chaves de validação (JWKS)
+      - Authentication__Authority=http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
+      # ValidIssuer: Mantém localhost pois o token do browser vem com 'iss': localhost
+      - Authentication__ValidIssuer=http://${LOCALHOST_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
+      - Authentication__Audience=${KEYCLOAK_CLIENT_ID}
+      - Authentication__RequireHttpsMetadata=false
+
+      - ASPNETCORE_ENVIRONMENT=${API_ENV}
+      - ASPNETCORE_URLS=http://+:${API_PORT}
+
+
+      # --- SEÇÃO KEYCLOAK ---
+      # 1. Backend (.NET) chama esta URL para se autenticar (Service Account)
+      # Deve ser a rede INTERNA do Docker
+      - Keycloak__TokenUrl=http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/token
+
+      # 2. Swagger (Navegador) chama esta URL para trocar o código pelo token
+      # Deve ser a rede EXTERNA (localhost), pois o navegador não conhece 'sipri-keycloak'
+      # --- NOVA VARIÁVEL QUE O C# VAI LER ---
+      - Keycloak__PublicTokenUrl=http://${LOCALHOST_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/token
+
+       # 3. Navegador é redirecionado para cá ao clicar em Login
+      # Deve ser a rede EXTERNA
+      - Keycloak__AuthorizationUrl=http://${LOCALHOST_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/auth
+      
+      - Keycloak__ClientSecret=${KEYCLOAK_CLIENT_SECRET}
+    ports:
+      - "${API_EXTERNAL_PORT}:${API_PORT}"
+    depends_on:
+      sipri-sql:
+        condition: service_healthy
+      sipri-keycloak:
+        condition: service_started
+    networks:
+      - sipri-network
+
+networks:
+  sipri-network:
+    driver: bridge
+
+volumes:
+  sqldata:
