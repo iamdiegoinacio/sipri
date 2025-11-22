@@ -6,6 +6,11 @@
 # dotenv files
 coverage-report/*
 
+#cibersecurity e testes
+.sonarqube
+/coveragereport
+coverlet.runsettings
+
 # User-specific files
 *.rsuser
 *.suo
