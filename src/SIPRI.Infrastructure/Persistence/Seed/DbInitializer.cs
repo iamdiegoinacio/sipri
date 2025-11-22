@@ -1,10 +1,12 @@
 ﻿using SIPRI.Domain.Entities;
 using SIPRI.Infrastructure.Persistence.Contexts;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SIPRI.Infrastructure.Persistence.Seed;
 
 public static class DbInitializer
 {
+    [ExcludeFromCodeCoverage]
     public static void Seed(AppDbContext context)
     {
         // Garante que o banco existe (Cria se não existir)
